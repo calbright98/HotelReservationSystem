@@ -1,15 +1,16 @@
 package reservation.system.main;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Reservation {
 
     private Guest guest;
     private Room room;
-    private Date StartDate;
-    private Date EndDate;
+    private LocalDate StartDate;
+    private LocalDate EndDate;
 
-    public Reservation(Guest g, Room r, Date start, Date end)
+    public Reservation(Guest g, Room r, LocalDate start, LocalDate end)
     {
         guest = g;
         room = r;
@@ -25,11 +26,11 @@ public class Reservation {
         return room;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return StartDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return EndDate;
     }
 

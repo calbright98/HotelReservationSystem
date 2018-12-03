@@ -32,6 +32,6 @@ public abstract class User
    public void addReservation(Reservation r){reservations.add(r);}
    
    public String toString() {
-	   return fName+lName+id+userName+pass+type;
+	   return fName + " " + lName + " " + id + " " + userName + " " + pass + " " + type;
    }
 }

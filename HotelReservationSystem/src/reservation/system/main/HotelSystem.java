@@ -3,6 +3,8 @@ package reservation.system.main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -29,6 +31,18 @@ public class HotelSystem {
         reservations = new ArrayList<Reservation>();
         
         populateUsers();
+        
+        for(Guest g : guests)
+        {
+        	System.out.println(g.toString());
+        }
+        
+        populateReservations();
+        
+        for(Reservation r : reservations)
+        {
+        	System.out.println(r.toString());
+        }
     }
 
     //Populates user arraylists from the users.txt file
@@ -38,10 +52,9 @@ public class HotelSystem {
     		File f = new File("users.txt");
 			BufferedReader br = new BufferedReader(new FileReader(f));
 			String line = br.readLine();
-			String[] data = new String[6];
 			while(line != null)
 			{
-				data = line.split(":");
+				String[] data = line.split(":");
 				if(data[5].equalsIgnoreCase("guest")){
 					guests.add(new Guest(data[0], data[1], data[2], data[3], data[4]));
 				}else if(data[5].equalsIgnoreCase("manager")){
@@ -60,14 +73,19 @@ public class HotelSystem {
     		File f = new File("reservations.txt");
 			BufferedReader br = new BufferedReader(new FileReader(f));
 			String line = br.readLine();
-			String[] data = new String[4];
 			while(line != null)
 			{
-				//TODO: get correct start and end date
+				String[] data = line.split(":");
 				Guest g = getGuest(data[0]);			//Finds the guest who made reservation
-				Room r = getRoom(new Integer(data[1]));	//Finds room that was reservedß
-				Date s = new Date();
-				Date e = new Date();
+				if(g == null)
+				{
+					System.out.println(data[0] + " Could not be found");
+				}
+				Room r = getRoom(Integer.parseInt(data[1]));	//Finds room that was reserved
+				
+				LocalDate s = LocalDate.parse(data[2], DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				LocalDate e = LocalDate.parse(data[3], DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				
 				reservations.add(new Reservation(g, r, s, e));
 				
 			}br.close();
@@ -91,10 +109,15 @@ public class HotelSystem {
     	return reservations;
     }
     
-    public Guest getGuest(String name)
+    /**
+     * Gets the guest with the specified first name
+     * @param firstName
+     * @return the guest whose first name matches with the given name
+     */
+    public Guest getGuest(String firstName)
     {
     	for(Guest g : guests){
-    		if(g.getFirstName().equals(name))
+    		if(g.getFirstName().equalsIgnoreCase(firstName))
     			return g;
     	}return null;
     }
