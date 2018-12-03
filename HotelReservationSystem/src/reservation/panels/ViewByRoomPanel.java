@@ -1,9 +1,10 @@
 package reservation.panels;
+import javax.swing.JPanel;
 import javax.swing.*;
 import java.awt.*;
 
 @SuppressWarnings("serial")
-public class ManagerViewbyRoom extends JPanel
+public class ViewByRoomPanel extends JPanel
 {
     JPanel top=new JPanel();
     JPanel center=new JPanel();
@@ -11,16 +12,26 @@ public class ManagerViewbyRoom extends JPanel
     JPanel botR=new JPanel();
     JPanel bot=new JPanel();
     JTextArea textfield=new JTextArea("Room View");
-    
-    public ManagerViewbyRoom()
+    public ViewByRoomPanel()
     {
         setLayout(new BorderLayout());
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());         
         top.add(textfield);
+        textfield.setEditable(false);
+        textfield.setOpaque(false);
         center.setLayout(new BorderLayout());
         bot.setLayout(new BorderLayout());
-        center.add(new JTextArea("Economic Rooms "),BorderLayout.NORTH);
-        bot.add(new JTextArea("Luxurious Rooms "),BorderLayout.NORTH);
+        
+        JTextArea economicRoom=new JTextArea("Economic Rooms:");
+        economicRoom.setEditable(false);
+        economicRoom.setOpaque(false);
+        center.add(economicRoom,BorderLayout.NORTH);
+        
+        JTextArea luxuryRoom=new JTextArea("Luxory Rooms:");
+        luxuryRoom.setEditable(false);
+        luxuryRoom.setOpaque(false);
+        bot.add(luxuryRoom,BorderLayout.NORTH);
+        
         centerR.setLayout(new GridLayout(2, 5));
         botR.setLayout(new GridLayout(2, 5));
         botR.setPreferredSize(new Dimension(100, 200));

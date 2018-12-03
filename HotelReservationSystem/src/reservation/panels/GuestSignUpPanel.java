@@ -2,6 +2,7 @@ package reservation.panels;
 import javax.swing.*;
 import java.awt.*;
 
+@SuppressWarnings("serial")
 public class GuestSignUpPanel extends JPanel{
 
     JLabel l1, l2, title;

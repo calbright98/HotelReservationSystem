@@ -9,7 +9,7 @@ public class Reservation {
     private Date StartDate;
     private Date EndDate;
 
-    Reservation(Guest g, Room r,Date start, Date end)
+    public Reservation(Guest g, Room r, Date start, Date end)
     {
         guest = g;
         room = r;

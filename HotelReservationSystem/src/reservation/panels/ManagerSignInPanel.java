@@ -1,7 +1,13 @@
 package reservation.panels;
 import javax.swing.*;
-import java.awt.*;
 
+import reservation.system.main.SystemDisplay;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+@SuppressWarnings("serial")
 public class ManagerSignInPanel extends JPanel {
 
     JLabel l1, l2, title, subText;
@@ -42,10 +48,31 @@ public class ManagerSignInPanel extends JPanel {
         add(uPass);
         add(signInBtn);
 
-        //Note: if username and password is taken/incorrect we could add another JLabel to output error text
+      //Note: if username and password is taken/incorrect we could add another JLabel to output error text
         //      or we could just create another frame that acts as a popup to output the error
 
         //Create and attach Listeners
         //...
+        signInBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                //if login valid (look through list)
+
+                changePanel(new AfterManagerLogin());
+
+                //else add error message
+            }
+        });
+    }
+
+    /**
+     * Replaces itself with a new panel based on which button was clicked
+     * @param p the panel that will replace this one.
+     */
+    public void changePanel(JPanel p){
+        SystemDisplay topFrame = (SystemDisplay) SwingUtilities.getWindowAncestor(this);
+        topFrame.setCurrentPanel(p);
+        System.out.println("Im in: " + topFrame.getName());
     }
 }

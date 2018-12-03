@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * 
  * @author Chang Chanip
  */
-public class ViewByDay extends JPanel
+public class ViewByDayPanel extends JPanel
    {
        JPanel top;
        JPanel center;
@@ -25,7 +25,7 @@ public class ViewByDay extends JPanel
        int Pendday;								// the end of next month(day)
        int first;								// the first day of week in number.
        
-       public ViewByDay()
+       public ViewByDayPanel()
        {
     	   top = new JPanel();
     	   center = new JPanel();

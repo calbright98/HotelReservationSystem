@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HotelSystem {
     LuxuryRoom luxuryRooms[]= new LuxuryRoom[10];
@@ -53,6 +54,28 @@ public class HotelSystem {
 		}
     }
     
+    public void populateReservations()
+    {
+    	try {
+    		File f = new File("reservations.txt");
+			BufferedReader br = new BufferedReader(new FileReader(f));
+			String line = br.readLine();
+			String[] data = new String[4];
+			while(line != null)
+			{
+				//TODO: get correct start and end date
+				Guest g = getGuest(data[0]);			//Finds the guest who made reservation
+				Room r = getRoom(new Integer(data[1]));	//Finds room that was reservedß
+				Date s = new Date();
+				Date e = new Date();
+				reservations.add(new Reservation(g, r, s, e));
+				
+			}br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
     public ArrayList<Manager> getManagers()
     {
     	return managers;
@@ -66,6 +89,36 @@ public class HotelSystem {
     public ArrayList<Reservation> getReservations()
     {
     	return reservations;
+    }
+    
+    public Guest getGuest(String name)
+    {
+    	for(Guest g : guests){
+    		if(g.getFirstName().equals(name))
+    			return g;
+    	}return null;
+    }
+    
+    /**
+     * Gets the appropriate room with the parsed roomNumber
+     * @param roomNumber the number of the room to be found
+     * @return
+     */
+    public Room getRoom(int roomNumber)
+    {
+    	for(Room r : economicRooms)
+    	{
+    		if(r.getRoomNumber() == roomNumber)
+    			return r;
+    	}
+    	
+    	for(Room r : luxuryRooms)
+    	{
+    		if(r.getRoomNumber() == roomNumber)
+    			return r;
+    	}
+    	
+    	return null;
     }
     
     //*********************** METHODS BASED ON USE CASES GO HERE *****************************
