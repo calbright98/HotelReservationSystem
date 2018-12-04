@@ -1,6 +1,11 @@
 package reservation.panels;
 import javax.swing.*;
+
+import reservation.system.main.SystemDisplay;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
 public class GuestSignInPanel extends JPanel {
@@ -46,7 +51,31 @@ public class GuestSignInPanel extends JPanel {
         //Note: if username and password is taken/incorrect we could add another JLabel to output error text
         //      or we could just create another frame that acts as a popup to output the error
 
+        signInBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+                //if login valid (look through list)
+            	if(checkLogin(uName.getText(), String.valueOf(uPass.getPassword()))) {
+            		changePanel(new AfterManagerLoginPanel());
+            	}else {
+            		//else add error message
+            		System.out.println("Invalid user, please try again");
+            	}
+			}
+        });
         //Create and attach Listeners
         //...
+    }
+    
+    public void changePanel(JPanel p){
+        SystemDisplay topFrame = (SystemDisplay)SwingUtilities.getWindowAncestor(this);
+        topFrame.setCurrentPanel(p);
+        System.out.println("Im in: " + topFrame.getName());
+    } 
+    
+    public boolean checkLogin(String username, String password)
+    {
+        SystemDisplay topFrame = (SystemDisplay)SwingUtilities.getWindowAncestor(this);
+    	return topFrame.checkLogin(username, password);
     }
 }

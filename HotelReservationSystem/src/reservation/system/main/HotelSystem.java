@@ -6,9 +6,9 @@ import java.io.FileReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class HotelSystem {
+	
     LuxuryRoom luxuryRooms[]= new LuxuryRoom[10];
     EconomicRoom economicRooms[]= new EconomicRoom[10];
     ArrayList<Manager> managers;
@@ -67,6 +67,7 @@ public class HotelSystem {
 		}
     }
     
+    //Populates reservations arraylist from the reservations.txt file
     public void populateReservations()
     {
     	try {
@@ -76,18 +77,19 @@ public class HotelSystem {
 			while(line != null)
 			{
 				String[] data = line.split(":");
-				Guest g = getGuest(data[0]);			//Finds the guest who made reservation
-				if(g == null)
+				Guest g = getGuest(data[0]);		//Finds the guest who made reservation
+				if(g == null)						//If the guest in the reservation is not in the system, the loop will skip that reservation and print out error message
 				{
-					System.out.println(data[0] + " Could not be found");
+					line = br.readLine();
+					continue;
 				}
 				Room r = getRoom(Integer.parseInt(data[1]));	//Finds room that was reserved
 				
-				LocalDate s = LocalDate.parse(data[2], DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-				LocalDate e = LocalDate.parse(data[3], DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				LocalDate s = LocalDate.parse(data[2], DateTimeFormatter.ofPattern("u-M-d"));
+				LocalDate e = LocalDate.parse(data[3], DateTimeFormatter.ofPattern("u-M-d"));
 				
 				reservations.add(new Reservation(g, r, s, e));
-				
+				line = br.readLine();
 			}br.close();
 		} catch (Exception e) {
 			e.printStackTrace();

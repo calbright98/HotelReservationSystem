@@ -1,7 +1,6 @@
 package reservation.system.main;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Reservation {
 
@@ -34,4 +33,8 @@ public class Reservation {
         return EndDate;
     }
 
+    public String toString()
+    {
+    	return guest + " " + room + " " + StartDate.toString() + " " + EndDate.toString();
+    }
 }

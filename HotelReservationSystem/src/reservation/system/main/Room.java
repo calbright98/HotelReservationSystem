@@ -28,4 +28,9 @@ public abstract class Room {
     public String getType(){return type;}
     public void addReservedDate(Date d){reservedDays.add(d);}
     public void addReservedDate(ArrayList<Date> days){reservedDays.addAll(days);}
+    
+    public String toString()
+    {
+    	return "Room number: " + number;
+    }
 }

@@ -4,7 +4,9 @@ public class ReservationSystem
 	public static void main(String[] args)
 	{
 		HotelSystem hs = new HotelSystem();
-		SystemDisplay mmd = new SystemDisplay();
+		
+		@SuppressWarnings("unused")
+		SystemDisplay mmd = new SystemDisplay(hs);
 		
 		hs.populateUsers();
 	}

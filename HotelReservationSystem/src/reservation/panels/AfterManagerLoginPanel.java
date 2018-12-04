@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 import reservation.system.main.SystemDisplay;
 
 @SuppressWarnings("serial")
-public class AfterManagerLogin extends JPanel {
+public class AfterManagerLoginPanel extends JPanel {
 
-    public AfterManagerLogin() {
+    public AfterManagerLoginPanel() {
         setLayout(null);
         JButton view = new JButton("view information");
         JButton load = new JButton("load existing reservations");

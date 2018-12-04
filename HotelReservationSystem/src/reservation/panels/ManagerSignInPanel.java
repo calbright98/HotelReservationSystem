@@ -10,13 +10,13 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class ManagerSignInPanel extends JPanel {
 
-    JLabel l1, l2, title, subText;
+	JLabel l1, l2, title, subText;
     JTextField uName;
     JButton signInBtn;
     JPasswordField uPass;
-
+    
     ManagerSignInPanel() {
-
+    	
         setLayout(null);
 
         //Initialize Components
@@ -26,7 +26,7 @@ public class ManagerSignInPanel extends JPanel {
         l2 = new JLabel("Password");
         uName = new JTextField();
         uPass = new JPasswordField();
-        signInBtn = new JButton("Sign In!");
+        signInBtn = new JButton("Sign In");
 
         //Set Bounds and component visuals
         title.setBounds(100, 20, 300, 30);
@@ -47,8 +47,8 @@ public class ManagerSignInPanel extends JPanel {
         add(l2);
         add(uPass);
         add(signInBtn);
-
-      //Note: if username and password is taken/incorrect we could add another JLabel to output error text
+                        
+        //Note: if username and password is taken/incorrect we could add another JLabel to output error text
         //      or we could just create another frame that acts as a popup to output the error
 
         //Create and attach Listeners
@@ -56,12 +56,13 @@ public class ManagerSignInPanel extends JPanel {
         signInBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 //if login valid (look through list)
-
-                changePanel(new AfterManagerLogin());
-
-                //else add error message
+            	if(checkLogin(uName.getText(), String.valueOf(uPass.getPassword()))) {
+            		changePanel(new AfterManagerLoginPanel());
+            	}else {
+            		//else add error message
+            		System.out.println("Invalid user, please try again");
+            	}
             }
         });
     }
@@ -71,8 +72,14 @@ public class ManagerSignInPanel extends JPanel {
      * @param p the panel that will replace this one.
      */
     public void changePanel(JPanel p){
-        SystemDisplay topFrame = (SystemDisplay) SwingUtilities.getWindowAncestor(this);
+        SystemDisplay topFrame = (SystemDisplay)SwingUtilities.getWindowAncestor(this);
         topFrame.setCurrentPanel(p);
         System.out.println("Im in: " + topFrame.getName());
+    }
+    
+    public boolean checkLogin(String username, String password)
+    {
+        SystemDisplay topFrame = (SystemDisplay)SwingUtilities.getWindowAncestor(this);
+    	return topFrame.checkLogin(username, password);
     }
 }
