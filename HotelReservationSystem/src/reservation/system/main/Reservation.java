@@ -35,6 +35,6 @@ public class Reservation {
 
     public String toString()
     {
-    	return guest + " " + room + " " + StartDate.toString() + " " + EndDate.toString();
+    	return guest.getFirstName() + " " + room + " " + StartDate.toString() + " " + EndDate.toString();
     }
 }

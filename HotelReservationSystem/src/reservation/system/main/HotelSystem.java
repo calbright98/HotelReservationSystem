@@ -1,8 +1,10 @@
 package reservation.system.main;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -160,6 +162,18 @@ public class HotelSystem {
     	return false;
     }
     
+    public boolean checkGuest(String username)
+    {
+    	for(Guest g : guests)
+    	{
+    		if(g.getUserName().equals(username))
+    		{
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     public boolean checkManager(String username, String password)
     {
     	for(Manager m : managers)
@@ -171,4 +185,17 @@ public class HotelSystem {
     	}
     	return false;
     }
+
+	public void addGuest(Guest g) 
+	{
+		guests.add(g);
+        try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter("users.txt", true));
+			bw.newLine();
+			bw.append(g.getFirstName() + ":" + g.getLastName() + ":" +  g.getID() + ":" +  g.getUserName() + ":" +  g.getPassword() + ":" + g.getType());
+			bw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
