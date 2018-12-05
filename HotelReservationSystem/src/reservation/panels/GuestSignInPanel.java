@@ -56,10 +56,10 @@ public class GuestSignInPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
                 //if login valid (look through list)
             	if(checkLogin(uName.getText(), String.valueOf(uPass.getPassword()))) {
-            		changePanel(new AfterManagerLoginPanel());
+            		changePanel(new AfterGuestLoginPanel());
             	}else {
             		//else add error message
-            		System.out.println("Invalid user, please try again");
+            		MessageWindow mw = new MessageWindow("Invalid username or password");
             	}
 			}
         });

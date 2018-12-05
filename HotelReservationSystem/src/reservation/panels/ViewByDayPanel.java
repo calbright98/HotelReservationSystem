@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * @author Chang Chanip
  */
 public class ViewByDayPanel extends JPanel
-   {
+{
        JPanel top;
        JPanel center;
        LocalDate D;
@@ -127,4 +127,4 @@ public class ViewByDayPanel extends JPanel
            this.add(top, BorderLayout.NORTH);
            this.add(center, BorderLayout.CENTER);
        }
-   }
+}

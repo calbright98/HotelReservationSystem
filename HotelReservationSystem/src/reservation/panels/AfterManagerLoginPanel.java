@@ -33,6 +33,7 @@ public class AfterManagerLoginPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //****Leave Blank for now until she tells us
+            	loadReservations();
             }
         });
         view.addActionListener(new ActionListener() {
@@ -56,5 +57,11 @@ public class AfterManagerLoginPanel extends JPanel {
         SystemDisplay topFrame = (SystemDisplay) SwingUtilities.getWindowAncestor(this);
         topFrame.setCurrentPanel(p);
         System.out.println("Im in: " + topFrame.getName());
+    }
+    
+    public void loadReservations()
+    {
+        SystemDisplay topFrame = (SystemDisplay)SwingUtilities.getWindowAncestor(this);
+        topFrame.loadReservations();
     }
 }

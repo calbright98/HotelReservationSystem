@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import reservation.panels.MessageWindow;
+
 public class HotelSystem {
 	
     LuxuryRoom luxuryRooms[]= new LuxuryRoom[10];
@@ -38,9 +40,7 @@ public class HotelSystem {
         {
         	System.out.println(g.toString());
         }
-        
-        populateReservations();
-        
+                
         for(Reservation r : reservations)
         {
         	System.out.println(r.toString());
@@ -72,6 +72,7 @@ public class HotelSystem {
     //Populates reservations arraylist from the reservations.txt file
     public void populateReservations()
     {
+    	int count = 0;
     	try {
     		File f = new File("reservations.txt");
 			BufferedReader br = new BufferedReader(new FileReader(f));
@@ -91,14 +92,16 @@ public class HotelSystem {
 				LocalDate e = LocalDate.parse(data[3], DateTimeFormatter.ofPattern("u-M-d"));
 				
 				reservations.add(new Reservation(g, r, s, e));
+				count++;
 				line = br.readLine();
 			}br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+    	MessageWindow mw = new MessageWindow(count + ": reservatios loaded");
     }
-    
-    public ArrayList<Manager> getManagers()
+
+	public ArrayList<Manager> getManagers()
     {
     	return managers;
     }

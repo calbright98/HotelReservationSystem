@@ -1,7 +1,4 @@
 package reservation.system.main;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -43,11 +40,18 @@ public class SystemDisplay extends JFrame
 		}return false;
 	}
 
-    public boolean checkNewGuest(String name){
+    public boolean checkNewGuest(String name)
+    {
         return hs.checkGuest(name);
     }
 
-    public void addGuest(Guest g){
+    public void addGuest(Guest g)
+    {
         hs.addGuest(g);
+    }
+    
+    public void loadReservations()
+    {
+    	hs.populateReservations();
     }
 }

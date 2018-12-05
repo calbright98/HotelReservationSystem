@@ -71,12 +71,12 @@ public class GuestSignUpPanel extends JPanel{
 
                 //Check
                 if(usrName.isEmpty() || first.isEmpty() || last.isEmpty() || pass.isEmpty()){
-                    ErrorWindow err = new ErrorWindow("Please fill all fields", getTopFrame());
+                    MessageWindow err = new MessageWindow("Please fill all fields");
                 }else if(!topFrame.checkNewGuest(usrName)) {	//if user doesn't already exist
                     topFrame.addGuest(new Guest(first, last, Integer.toString(calcRandNum()),usrName, pass));	//Create new user and add to HotelSytem arraylist
                     topFrame.setCurrentPanel(new GuestSignInPanel());
                 }else{
-                    ErrorWindow err = new ErrorWindow("Username already exists", getTopFrame());
+                    MessageWindow err = new MessageWindow("Username already exists");
                 }
             }
         });
@@ -92,14 +92,13 @@ public class GuestSignUpPanel extends JPanel{
         System.out.println("Im in: " + topFrame.getName());
     }
 
-    private GuestSignUpPanel getPanel(){
+    private GuestSignUpPanel getPanel()
+    {
         return this;
     }
-    private JFrame getTopFrame(){
-        return (SystemDisplay) SwingUtilities.getWindowAncestor(this);
-    }
 
-    private int calcRandNum(){
+    private int calcRandNum()
+    {
         Random rand = new Random();
         return rand.nextInt(999999) + 100000;
     }

@@ -1,3 +1,4 @@
 William:Barrera:123786:WBarrera22:secretNewPass!2:guest
 chong:chanip:895401:CChanip:1234:guest
 chris:albright:1051409:calbright:1234:guest
+sunuey:kim:151180:KSunuey151:myfirstood:manager
