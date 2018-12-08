@@ -13,11 +13,12 @@ import reservation.panels.MessageWindow;
 
 public class HotelSystem {
 	
-    LuxuryRoom luxuryRooms[]= new LuxuryRoom[10];
-    EconomicRoom economicRooms[]= new EconomicRoom[10];
-    ArrayList<Manager> managers;
-    ArrayList<Guest> guests;
-    ArrayList<Reservation> reservations;
+    private LuxuryRoom luxuryRooms[]= new LuxuryRoom[10];
+    private EconomicRoom economicRooms[]= new EconomicRoom[10];
+    private ArrayList<Manager> managers;
+    private ArrayList<Guest> guests;
+    private ArrayList<Reservation> reservations;
+    private User currentUser;
     //either an action listener or changeListner needed to attach the main display frame to this data model
 
     HotelSystem()
@@ -151,6 +152,50 @@ public class HotelSystem {
     	return null;
     }
     
+    public User getUser(String username)
+    {
+    	for(Guest g : guests)
+    	{
+    		if(g.getUserName().equals(username))
+    		{
+    			return g;
+    		}
+    	}
+    	
+    	for(Manager m : managers)
+    	{
+    		if(m.getUserName().equals(username))
+    		{
+    			return m;
+    		}
+    	}
+    	return null;
+    }
+    
+    /**
+     * 
+     * @param luxury True if the room is luxury, false if it is economic
+     * @param ci The requested check-in date
+     * @param co The requested check-out date
+     * @return an available luxury or economic room or null if none are available
+     */
+    public Room getAvailableRoom(boolean luxury, LocalDate ci, LocalDate co)
+    {
+    	if(luxury) {
+    		for(Room r : luxuryRooms) {
+    			if(r.checkAvailability(ci, co)) {
+    				return r;
+    			}
+    		}
+    	}else {
+    		for(Room r : economicRooms) {
+    			if(r.checkAvailability(ci, co)) {
+    				return r;
+    			}
+    		}
+    	}return null;
+    }
+    
     //*********************** METHODS BASED ON USE CASES GO HERE *****************************
     
     public boolean checkGuest(String username, String password)
@@ -201,4 +246,17 @@ public class HotelSystem {
 			e.printStackTrace();
 		}
 	}
+	
+    public void addReservation(Reservation r)
+    {
+    	reservations.add(r);
+        try {
+ 			BufferedWriter bw = new BufferedWriter(new FileWriter("reservations.txt", true));
+ 			bw.newLine();
+ 			bw.append(r.getGuest().getFirstName() + ":" + r.getRoom().getRoomNumber() + ":" + r.getStartDate() + ":" + r.getEndDate());
+ 			bw.close();
+ 		} catch (Exception e) {
+ 			e.printStackTrace();
+ 		}   
+    }
 }

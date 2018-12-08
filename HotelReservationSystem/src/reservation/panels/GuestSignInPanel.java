@@ -2,6 +2,7 @@ package reservation.panels;
 import javax.swing.*;
 
 import reservation.system.main.SystemDisplay;
+import reservation.system.main.User;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -70,12 +71,17 @@ public class GuestSignInPanel extends JPanel {
     public void changePanel(JPanel p){
         SystemDisplay topFrame = (SystemDisplay)SwingUtilities.getWindowAncestor(this);
         topFrame.setCurrentPanel(p);
-        System.out.println("Im in: " + topFrame.getName());
     } 
     
     public boolean checkLogin(String username, String password)
     {
         SystemDisplay topFrame = (SystemDisplay)SwingUtilities.getWindowAncestor(this);
-    	return topFrame.checkLogin(username, password);
+        if(topFrame.checkLogin(username, password))
+        {
+        	User user = topFrame.getUser(uName.getText());
+        	topFrame.setCurentUser(user);
+        	return true;
+        }
+    	return false;
     }
 }

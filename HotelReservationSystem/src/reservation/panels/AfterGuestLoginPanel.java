@@ -12,7 +12,9 @@ import reservation.system.main.SystemDisplay;
 @SuppressWarnings("serial")
 public class AfterGuestLoginPanel extends JPanel
 {
+	
     public AfterGuestLoginPanel() {
+    	
         setLayout(null);
         JButton make = new JButton("Make a reservation");
         JButton viewcancel = new JButton("View/Cancel reservation");
@@ -25,9 +27,11 @@ public class AfterGuestLoginPanel extends JPanel
         make.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	MakeReservationWindow mrw = new MakeReservationWindow();
+            	@SuppressWarnings("unused")
+				MakeReservationWindow mrw = new MakeReservationWindow(getTopFrame());
             }
         });
+        
         viewcancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -44,13 +48,17 @@ public class AfterGuestLoginPanel extends JPanel
      * @param p the panel that will replace this one.
      */
     public void changePanel(JPanel p){
-        SystemDisplay topFrame = (SystemDisplay) SwingUtilities.getWindowAncestor(this);
+    	SystemDisplay topFrame = (SystemDisplay) SwingUtilities.getWindowAncestor(this);
         topFrame.setCurrentPanel(p);
     }
     
-    public void loadReservations()
-    {
-        SystemDisplay topFrame = (SystemDisplay)SwingUtilities.getWindowAncestor(this);
+    public void loadReservations(){
+    	SystemDisplay topFrame = (SystemDisplay) SwingUtilities.getWindowAncestor(this);
         topFrame.loadReservations();
+    }
+    
+    public SystemDisplay getTopFrame()
+    {
+    	return (SystemDisplay) SwingUtilities.getWindowAncestor(this);
     }
 }
