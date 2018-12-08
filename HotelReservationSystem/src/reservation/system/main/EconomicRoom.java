@@ -5,8 +5,7 @@ public class EconomicRoom extends Room {
     }
     
     @Override
-    public int compareTo(Object o) {
-        Room er = (Room) o;
-        return super.getRoomNumber() - er.getRoomNumber();
+    public int compareTo(Room r) {
+        return super.getRoomNumber() - r.getRoomNumber();
     }
 }

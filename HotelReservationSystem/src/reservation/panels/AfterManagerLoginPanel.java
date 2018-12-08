@@ -39,7 +39,7 @@ public class AfterManagerLoginPanel extends JPanel {
         view.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changePanel(new ManagerViewInformationPanel());
+                changePanel(new ManagerViewInfoPanel());
             }
         });
 
@@ -56,7 +56,6 @@ public class AfterManagerLoginPanel extends JPanel {
     public void changePanel(JPanel p){
         SystemDisplay topFrame = (SystemDisplay) SwingUtilities.getWindowAncestor(this);
         topFrame.setCurrentPanel(p);
-        System.out.println("Im in: " + topFrame.getName());
     }
     
     public void loadReservations()

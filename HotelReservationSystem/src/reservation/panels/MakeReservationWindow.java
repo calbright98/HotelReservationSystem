@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 
 import reservation.system.main.Guest;
 import reservation.system.main.Reservation;
+import reservation.system.main.Room;
 import reservation.system.main.SystemDisplay;
 
 @SuppressWarnings("serial")
@@ -170,7 +171,15 @@ public class MakeReservationWindow extends JDialog
 		LocalDate checkin = LocalDate.of((int)inYear.getSelectedItem(), selectedInMonth, (int)inDay.getSelectedItem());
 		LocalDate checkout = LocalDate.of((int)outYear.getSelectedItem(), selectedOutMonth, (int)outDay.getSelectedItem());
 		Guest guest = (Guest)sd.getCurrentUser();
-		Reservation r = new Reservation(guest, sd.getAvailableRoom(luxury, checkin, checkout), checkin, checkout);
+		
+		Room room = sd.getAvailableRoom(luxury, checkin, checkout);
+		
+		if(room == null) {
+			MessageWindow mw = new MessageWindow("No rooms available");
+			return;
+		}
+		
+		Reservation r = new Reservation(guest, room, checkin, checkout);
 		sd.addReservation(r);
 	}
 }

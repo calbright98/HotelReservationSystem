@@ -22,7 +22,7 @@ public class SystemDisplay extends JFrame
 		
 		currentPanel = new UserSelectionPanel();
 		add(currentPanel);
-		
+				
 		setSize(400,400);
 		setVisible(true);
 		setLocationRelativeTo(null);

@@ -5,8 +5,7 @@ public class LuxuryRoom extends Room {
     }
     
     @Override
-    public int compareTo(Object o) {
-        Room lr = (Room) o;
-        return super.getRoomNumber() - lr.getRoomNumber();
+    public int compareTo(Room r) {
+        return super.getRoomNumber() - r.getRoomNumber();
     }
 }

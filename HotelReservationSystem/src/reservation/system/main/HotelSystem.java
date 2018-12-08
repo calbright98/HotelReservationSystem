@@ -13,12 +13,12 @@ import reservation.panels.MessageWindow;
 
 public class HotelSystem {
 	
-    private LuxuryRoom luxuryRooms[]= new LuxuryRoom[10];
-    private EconomicRoom economicRooms[]= new EconomicRoom[10];
+    private ArrayList<Room> rooms = new ArrayList<Room>();
+    private LuxuryRoom[] luxuryRooms = new LuxuryRoom[10];
+    private EconomicRoom[] economicRooms = new EconomicRoom[10];
     private ArrayList<Manager> managers;
     private ArrayList<Guest> guests;
     private ArrayList<Reservation> reservations;
-    private User currentUser;
     //either an action listener or changeListner needed to attach the main display frame to this data model
 
     HotelSystem()
@@ -26,8 +26,8 @@ public class HotelSystem {
         //Initialize Rooms
         for (int i = 0; i < 10; i++) 
         {
-            luxuryRooms[i] = new LuxuryRoom(i + 200);		//LuxuryRooms are numbered 200-299
-            economicRooms[i] = new EconomicRoom(i + 100);	//EconomicRooms are numbered 100-199
+            rooms.add(luxuryRooms[i] = new LuxuryRoom(i + 200));		//LuxuryRooms are numbered 200-299
+            rooms.add(economicRooms[i] = new EconomicRoom(i + 100));	//EconomicRooms are numbered 100-199
         }
 
         //Initialize Guests, Mangers and reservations lists
@@ -42,6 +42,8 @@ public class HotelSystem {
         	System.out.println(g.toString());
         }
                 
+        populateReservations();
+        
         for(Reservation r : reservations)
         {
         	System.out.println(r.toString());
@@ -73,33 +75,43 @@ public class HotelSystem {
     //Populates reservations arraylist from the reservations.txt file
     public void populateReservations()
     {
-    	int count = 0;
-    	try {
-    		File f = new File("reservations.txt");
-			BufferedReader br = new BufferedReader(new FileReader(f));
-			String line = br.readLine();
-			while(line != null)
-			{
-				String[] data = line.split(":");
-				Guest g = getGuest(data[0]);		//Finds the guest who made reservation
-				if(g == null)						//If the guest in the reservation is not in the system, the loop will skip that reservation and print out error message
-				{
-					line = br.readLine();
-					continue;
-				}
-				Room r = getRoom(Integer.parseInt(data[1]));	//Finds room that was reserved
-				
-				LocalDate s = LocalDate.parse(data[2], DateTimeFormatter.ofPattern("u-M-d"));
-				LocalDate e = LocalDate.parse(data[3], DateTimeFormatter.ofPattern("u-M-d"));
-				
-				reservations.add(new Reservation(g, r, s, e));
-				count++;
-				line = br.readLine();
-			}br.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    	MessageWindow mw = new MessageWindow(count + ": reservatios loaded");
+        int count = 0;
+        try {
+            File f = new File("reservations.txt");
+            BufferedReader br = new BufferedReader(new FileReader(f));
+            String line = br.readLine();
+            while(line != null)
+            {
+                String[] data = line.split(":");
+                Guest g = getGuest(data[0]);		//Finds the guest who made reservation
+                if(g == null)						//If the guest in the reservation is not in the system, the loop will skip that reservation and print out error message
+                {
+                    line = br.readLine();
+                    continue;
+                }
+                Room r = getRoom(Integer.parseInt(data[1]));	//Finds room that was reserved
+
+                LocalDate s = LocalDate.parse(data[2], DateTimeFormatter.ofPattern("u-M-d"));
+                LocalDate e = LocalDate.parse(data[3], DateTimeFormatter.ofPattern("u-M-d"));
+
+                reservations.add(new Reservation(g, r, s, e));
+
+                //Add Set Reserved Days for the room
+                LocalDate cur = LocalDate.parse(data[2], DateTimeFormatter.ofPattern("u-M-d"));
+                ArrayList<LocalDate> reservedDays = new ArrayList<>();
+                while(cur.isBefore(e) || cur.isEqual(e)) {
+                    reservedDays.add(cur);
+                    cur = cur.plusDays(1);
+                }
+                r.addReservedDate(reservedDays);
+
+                count++;
+                line = br.readLine();
+            }br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        MessageWindow mw = new MessageWindow(count + ": reservations loaded");
     }
 
 	public ArrayList<Manager> getManagers()
@@ -137,13 +149,7 @@ public class HotelSystem {
      */
     public Room getRoom(int roomNumber)
     {
-    	for(Room r : economicRooms)
-    	{
-    		if(r.getRoomNumber() == roomNumber)
-    			return r;
-    	}
-    	
-    	for(Room r : luxuryRooms)
+    	for(Room r : rooms)
     	{
     		if(r.getRoomNumber() == roomNumber)
     			return r;
@@ -250,6 +256,15 @@ public class HotelSystem {
     public void addReservation(Reservation r)
     {
     	reservations.add(r);
+        LocalDate cur = r.getStartDate();
+        LocalDate end = r.getEndDate();
+        ArrayList<LocalDate> reservedDays = new ArrayList<>();
+        while(cur.isBefore(end) || cur.isEqual(end)) {
+            reservedDays.add(cur);
+            cur = cur.plusDays(1);
+        }
+        Room room = r.getRoom();
+        room.addReservedDate(reservedDays);
         try {
  			BufferedWriter bw = new BufferedWriter(new FileWriter("reservations.txt", true));
  			bw.newLine();

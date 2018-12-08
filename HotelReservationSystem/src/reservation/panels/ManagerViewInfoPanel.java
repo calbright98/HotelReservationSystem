@@ -8,9 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
-public class ManagerViewInformationPanel extends JPanel
+public class ManagerViewInfoPanel extends JPanel
 {
-    public ManagerViewInformationPanel()
+    public ManagerViewInfoPanel()
     {
         setLayout(null);
         JButton viewbyday =new JButton("view by day" );
@@ -46,6 +46,5 @@ public class ManagerViewInformationPanel extends JPanel
     public void changePanel(JPanel p){
         SystemDisplay topFrame = (SystemDisplay) SwingUtilities.getWindowAncestor(this);
         topFrame.setCurrentPanel(p);
-        System.out.println("Im in: " + topFrame.getName());
     }
 }
