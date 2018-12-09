@@ -6,14 +6,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.temporal.ChronoUnit;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import org.omg.DynamicAny.DynAnySeqHelper;
 
 import reservation.system.main.Guest;
 import reservation.system.main.Reservation;
@@ -161,11 +165,13 @@ public class MakeReservationWindow extends JDialog
 	private void createReservation() 
 	{
 		boolean luxury;
+		MessageWindow mw;
 		if(roomType.getSelectedIndex() == 1){
 			luxury = true;
 		}else {
 			luxury = false;
 		}
+		
 		Month selectedInMonth = Month.valueOf(Month.class, (String)inMonth.getSelectedItem());
 		Month selectedOutMonth = Month.valueOf(Month.class, (String)outMonth.getSelectedItem());
 		LocalDate checkin = LocalDate.of((int)inYear.getSelectedItem(), selectedInMonth, (int)inDay.getSelectedItem());
@@ -174,12 +180,20 @@ public class MakeReservationWindow extends JDialog
 		
 		Room room = sd.getAvailableRoom(luxury, checkin, checkout);
 		
+		if(Duration.between(checkin.atStartOfDay(), checkout.atStartOfDay()).toDays() > 60){
+			mw = new MessageWindow("Cannot reserve rooms for more than 60 days");
+			return;
+		}else if(checkin.isAfter(checkout)) {
+			mw = new MessageWindow("Check-in date cannot be before check-out");
+		}
+		
 		if(room == null) {
-			MessageWindow mw = new MessageWindow("No rooms available");
+			mw = new MessageWindow("No rooms available");
 			return;
 		}
 		
 		Reservation r = new Reservation(guest, room, checkin, checkout);
+		r.setCreatedDate(LocalDate.now());
 		sd.addReservation(r);
 	}
 }

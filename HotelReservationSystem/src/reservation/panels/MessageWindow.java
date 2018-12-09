@@ -13,11 +13,14 @@ public class MessageWindow extends JDialog {
         setModal(true);
         setLayout(null);
 
-        JLabel msg = new JLabel(message);
+        JTextArea msg = new JTextArea(message);
+        msg.setLineWrap(true);
+        msg.setEditable(false);
+        msg.setOpaque(false);
         JButton ok = new JButton("OK");
         msg.setBounds(50, 25, 200, 40);
         ok.setBounds(75, 75, 120, 40);
-
+        
         add(msg);
         add(ok);
 

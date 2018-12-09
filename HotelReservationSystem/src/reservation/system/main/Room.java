@@ -48,4 +48,10 @@ public abstract class Room implements Comparable<Room> {
     public int compareTo(Room r) {
         return getRoomNumber() - r.getRoomNumber();
     }
+    
+    public boolean equals(Object o)
+    {
+    	Room other = (Room)o;
+    	return other.getRoomNumber() == number;
+    }
 }

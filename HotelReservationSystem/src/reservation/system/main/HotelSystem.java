@@ -41,15 +41,18 @@ public class HotelSystem {
         {
         	System.out.println(g.toString());
         }
-                
-        populateReservations();
-        
+                        
         for(Reservation r : reservations)
         {
         	System.out.println(r.toString());
         }
     }
 
+    public ArrayList<Room> getRooms()
+    {
+    	return rooms;
+    }
+    
     //Populates user arraylists from the users.txt file
     public void populateUsers()
     {
@@ -94,7 +97,16 @@ public class HotelSystem {
                 LocalDate s = LocalDate.parse(data[2], DateTimeFormatter.ofPattern("u-M-d"));
                 LocalDate e = LocalDate.parse(data[3], DateTimeFormatter.ofPattern("u-M-d"));
 
-                reservations.add(new Reservation(g, r, s, e));
+                Reservation newRes = new Reservation(g, r, s, e);
+                if(reservations.contains(newRes))
+                {
+                    line = br.readLine();
+                	continue;
+                }
+                
+                LocalDate created = LocalDate.parse(data[4], DateTimeFormatter.ofPattern("u-M-d"));
+                newRes.setCreatedDate(created);                
+                reservations.add(newRes);
 
                 //Add Set Reserved Days for the room
                 LocalDate cur = LocalDate.parse(data[2], DateTimeFormatter.ofPattern("u-M-d"));
@@ -112,6 +124,19 @@ public class HotelSystem {
             e.printStackTrace();
         }
         MessageWindow mw = new MessageWindow(count + ": reservations loaded");
+    }
+    
+    public void saveReservations(){
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("reservations.txt", false));
+            for(Reservation r : reservations){
+                bw.newLine();
+                bw.append(r.getGuest().getID() + ":" + r.getRoom().getRoomNumber() + ":" + r.getStartDate() + ":" + r.getEndDate() + ":" + r.getCreatedDate());
+            }
+            bw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 	public ArrayList<Manager> getManagers()
@@ -131,15 +156,14 @@ public class HotelSystem {
     
     /**
      * Gets the guest with the specified first name
-     * @param firstName
+     * @param ID the ID of the guest with this reservation
      * @return the guest whose first name matches with the given name
      */
-    public Guest getGuest(String firstName)
-    {
-    	for(Guest g : guests){
-    		if(g.getFirstName().equalsIgnoreCase(firstName))
-    			return g;
-    	}return null;
+    public Guest getGuest(String ID) {
+        for(Guest g : guests){
+            if(g.getID().equalsIgnoreCase(ID))
+                return g;
+        }return null;
     }
     
     /**
@@ -255,7 +279,7 @@ public class HotelSystem {
 	
     public void addReservation(Reservation r)
     {
-    	reservations.add(r);
+        reservations.add(r);
         LocalDate cur = r.getStartDate();
         LocalDate end = r.getEndDate();
         ArrayList<LocalDate> reservedDays = new ArrayList<>();
@@ -265,13 +289,5 @@ public class HotelSystem {
         }
         Room room = r.getRoom();
         room.addReservedDate(reservedDays);
-        try {
- 			BufferedWriter bw = new BufferedWriter(new FileWriter("reservations.txt", true));
- 			bw.newLine();
- 			bw.append(r.getGuest().getFirstName() + ":" + r.getRoom().getRoomNumber() + ":" + r.getStartDate() + ":" + r.getEndDate());
- 			bw.close();
- 		} catch (Exception e) {
- 			e.printStackTrace();
- 		}   
     }
 }

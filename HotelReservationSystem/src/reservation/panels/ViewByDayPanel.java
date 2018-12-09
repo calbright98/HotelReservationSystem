@@ -1,11 +1,14 @@
 package reservation.panels;
 
 import javax.swing.*;
+
 import reservation.system.main.SystemDisplay;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.util.Date;
 @SuppressWarnings("serial")
 public class ViewByDayPanel extends JPanel
 {
@@ -21,6 +24,8 @@ public class ViewByDayPanel extends JPanel
     LocalDate Pend;                         // the end of next month(date)
     int Pendday;                                // the end of next month(day)
     int first;                              // the first day of week in number.
+    DateReservationsView view;
+
     public ViewByDayPanel()
     {
         top = new JPanel();
@@ -30,6 +35,7 @@ public class ViewByDayPanel extends JPanel
         displayMonth();
         this.add(top, BorderLayout.NORTH);
         this.add(center, BorderLayout.CENTER);
+        view = new DateReservationsView();
     }
     public void displayMonth()
     {
@@ -52,11 +58,11 @@ public class ViewByDayPanel extends JPanel
                 public void actionPerformed(ActionEvent e)
                 {
                     SystemDisplay topFrame = (SystemDisplay) SwingUtilities.getWindowAncestor(getPanel());
-                    int dayOfMonth= finalI;
+                    int dayOfMonth = finalI;
                     int year = D.getYear();
                     int month=D.getMonth().getValue();
                     LocalDate d = LocalDate.of(year,month,dayOfMonth);
-                   topFrame.PrintReservation(d);
+                    topFrame.PrintReservation(d, view);
                 }
             });
             center.add(keyButton);

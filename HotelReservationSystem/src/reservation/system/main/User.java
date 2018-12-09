@@ -34,4 +34,10 @@ public abstract class User
    public String toString() {
 	   return fName + " " + lName + " " + id + " " + userName + " " + pass + " " + type;
    }
+   
+   public boolean equals(Object o)
+   {
+	   User other = (User)o;
+	   return other.id == id;
+   }
 }

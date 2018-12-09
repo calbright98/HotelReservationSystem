@@ -1,4 +1,5 @@
 package reservation.panels;
+
 import javax.swing.*;
 
 import reservation.system.main.SystemDisplay;
@@ -53,35 +54,43 @@ public class GuestSignInPanel extends JPanel {
         //      or we could just create another frame that acts as a popup to output the error
 
         signInBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 //if login valid (look through list)
-            	if(checkLogin(uName.getText(), String.valueOf(uPass.getPassword()))) {
-            		changePanel(new AfterGuestLoginPanel());
-            	}else {
-            		//else add error message
-            		MessageWindow mw = new MessageWindow("Invalid username or password");
-            	}
-			}
+                if(checkLogin(uName.getText(), String.valueOf(uPass.getPassword()))) {
+                    changeToLoggedInWindow();
+                }else {
+                    //else add error message
+                    MessageWindow mw = new MessageWindow("Invalid username or password");
+                }
+            }
         });
-        //Create and attach Listeners
-        //...
     }
-    
+
     public void changePanel(JPanel p){
         SystemDisplay topFrame = (SystemDisplay)SwingUtilities.getWindowAncestor(this);
         topFrame.setCurrentPanel(p);
-    } 
-    
+    }
+
+    public void changeToLoggedInWindow(){
+        SystemDisplay topFrame = getTopFrame();
+        topFrame.setUserButtons();
+        changePanel(new AfterGuestLoginPanel());
+    }
+
     public boolean checkLogin(String username, String password)
     {
         SystemDisplay topFrame = (SystemDisplay)SwingUtilities.getWindowAncestor(this);
         if(topFrame.checkLogin(username, password))
         {
-        	User user = topFrame.getUser(uName.getText());
-        	topFrame.setCurentUser(user);
-        	return true;
+            User user = topFrame.getUser(uName.getText());
+            topFrame.setCurentUser(user);
+            return true;
         }
-    	return false;
+        return false;
+    }
+
+    private SystemDisplay getTopFrame(){
+        return (SystemDisplay) SwingUtilities.getWindowAncestor(this);
     }
 }

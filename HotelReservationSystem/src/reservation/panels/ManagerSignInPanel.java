@@ -74,7 +74,6 @@ public class ManagerSignInPanel extends JPanel {
     public void changePanel(JPanel p){
         SystemDisplay topFrame = (SystemDisplay)SwingUtilities.getWindowAncestor(this);
         topFrame.setCurrentPanel(p);
-        System.out.println("Im in: " + topFrame.getName());
     }
     
     public boolean checkLogin(String username, String password)

@@ -1,12 +1,13 @@
 package reservation.panels;
 
 import javax.swing.*;
+
+import reservation.system.main.SystemDisplay;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import reservation.system.main.SystemDisplay;
 
-@SuppressWarnings("serial")
 public class AfterManagerLoginPanel extends JPanel {
 
     public AfterManagerLoginPanel() {
@@ -14,6 +15,7 @@ public class AfterManagerLoginPanel extends JPanel {
         JButton view = new JButton("view information");
         JButton load = new JButton("load existing reservations");
         JButton save = new JButton("save reservations");
+        JButton quit = new JButton("QUIT");
 
         view.setBounds(100, 50, 200, 30);
         view.setBackground(Color.LIGHT_GRAY);
@@ -21,19 +23,21 @@ public class AfterManagerLoginPanel extends JPanel {
         load.setBackground(Color.LIGHT_GRAY);
         save.setBounds(100, 130, 200, 30);
         save.setBackground(Color.LIGHT_GRAY);
-
+        quit.setBounds(100, 250, 200, 30);
+        quit.setBackground(Color.RED);
+        quit.setForeground(Color.WHITE);
 
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //save reservations to file
+                SystemDisplay sd = getTopFrame();
+                sd.getHs().saveReservations();
             }
         });
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //****Leave Blank for now until she tells us
-            	loadReservations();
+                loadReservations();
             }
         });
         view.addActionListener(new ActionListener() {
@@ -42,11 +46,19 @@ public class AfterManagerLoginPanel extends JPanel {
                 changePanel(new ManagerViewInfoPanel());
             }
         });
-
+        quit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SystemDisplay sd = getTopFrame();
+                sd.getHs().saveReservations();
+                sd.dispose();
+            }
+        });
 
         this.add(view);
         this.add(load);
         this.add(save);
+        this.add(quit);
     }
 
     /**
@@ -57,10 +69,13 @@ public class AfterManagerLoginPanel extends JPanel {
         SystemDisplay topFrame = (SystemDisplay) SwingUtilities.getWindowAncestor(this);
         topFrame.setCurrentPanel(p);
     }
-    
-    public void loadReservations()
-    {
+
+    public void loadReservations(){
         SystemDisplay topFrame = (SystemDisplay)SwingUtilities.getWindowAncestor(this);
         topFrame.loadReservations();
+    }
+
+    private SystemDisplay getTopFrame(){
+        return (SystemDisplay) SwingUtilities.getWindowAncestor(this);
     }
 }

@@ -8,6 +8,7 @@ public class Reservation {
     private Room room;
     private LocalDate StartDate;
     private LocalDate EndDate;
+    private LocalDate createdDate;
 
     public Reservation(Guest g, Room r, LocalDate start, LocalDate end)
     {
@@ -37,4 +38,18 @@ public class Reservation {
     {
     	return guest.getFirstName() + " " + room + " " + StartDate.toString() + " " + EndDate.toString();
     }
+    
+    public boolean equals(Object o)
+    {
+    	Reservation other = (Reservation)o;
+    	return other.getGuest().equals(guest) && other.getRoom().equals(room) && other.getStartDate().equals(StartDate) && other.getEndDate().equals(EndDate);
+    }
+
+	public LocalDate getCreatedDate() {
+		return createdDate;
+	}
+	
+	public void setCreatedDate(LocalDate r) {
+		createdDate = r;
+	}
 }
